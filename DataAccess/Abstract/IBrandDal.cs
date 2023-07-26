@@ -1,4 +1,5 @@
-﻿using Core.DataAccess.EntityFramework;
+﻿using Core.DataAccess;
+using Core.DataAccess.EntityFramework;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Abstract
 {
-    public interface IBrandDal : IEntityRepositoryBase<Brand>
+    public interface IBrandDal : IEntityRepository<Brand>
     {
 
     }

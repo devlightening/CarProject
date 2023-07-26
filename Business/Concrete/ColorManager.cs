@@ -3,59 +3,52 @@ using Business.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
+using DataAccess.Abstract;
+using Entities.Concrete;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    public class BrandManager : IBrandService
+    public class ColorManager : IColorService
     {
-        IBrandDal _brandDal;
+        IColorDal _colorDal;
 
-        public BrandManager(IBrandDal brandDal)
+        public ColorManager(IColorDal colorDal)
         {
-            _brandDal = brandDal;
+            _colorDal = colorDal;
         }
 
-        public IResult Add(Brand brand)
+        public IResult Add(Color color)
         {
-            if (brand.BrandName.Length <= 2)
-            {
-                return new ErrorResult(Message.BrandNameInValid);
-            }
-
-            _brandDal.Add(brand);
-            return new SuccessResult(Message.AddedBrand);
+          _colorDal.Add(color);
+            return new SuccessResult(Messages.AddedColor);
         }
 
-        public IResult Delete(Brand brand)
+        public IResult Delete(Color color)
         {
-            _brandDal.Delete(brand);
-            return new SuccessResult(Message.DeletedBrand);
+            _colorDal.Delete(color);
+            return new SuccessResult(Messages.AddedColor);
+        }
+        public IResult Update(Color color)
+        {
+            _colorDal.Update(color);
+            return new SuccessResult(Messages.UpdatedColor);
+        }
+        public IDataResult<List<Color>> GetAll()
+        {
+           return new SuccessDataResult<List<Color>>(_colorDal.GetAll(),Messages.Listed); 
         }
 
-        public IDataResult<List<Brand>> GetAll()
+        public IDataResult<Color> GetById(int colorId)
         {
-            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll());
+            return new SuccessDataResult<Color>(_colorDal.Get(c=>c.ColorId==colorId));
         }
 
-        public IDataResult<Brand> GetById(int brandId)
-        {
-            return new SuccessDataResult<Brand>(_brandDal.Get(b => b.BrandId == brandId));
-        }
-
-        public IResult Update(Brand brand)
-        {
-            if (brand.BrandName.Length <= 2)
-            {
-                return new ErrorResult(Message.BrandNameInValid);
-            }
-
-            _brandDal.Update(brand);
-            return new SuccessResult(Message.UpdatedBrand);
-        }
+    
     }
 }

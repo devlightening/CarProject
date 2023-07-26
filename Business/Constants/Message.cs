@@ -6,32 +6,37 @@ using System.Threading.Tasks;
 
 namespace Business.Constants 
 {
-    public class Message
+    public class Messages
     {
-        //------------CAR MESSAGES-------------\\
+        public static string Added = "Added";
+        public static string Deleted = "Deleted";
+        public static string Updated = "Updated";
+        public static string Listed = "Listed";
+        //CAR MESSAGES\\
         public static string AddedCar="Added the Car";
+        public static string ListedCar="Listed the Cars.";
         public static string UpdatedCar="Updated the Car";
         public static string DeletedCar="Deleted the Car";
         public static string CarNameInValid= "Car name must be at least two characters";
         public static string CarPriceIsNegative= "Car daily price must be greater than 0";
         
-        //------------BRAND MESSAGES-------------\\
+        //BRAND MESSAGES\\
         public static string AddedBrand= "Added the Brand";
         public static string UpdatedBrand = "Updated the Brand";
         public static string DeletedBrand = "Deleted the Brand";
         public static string BrandNameInValid = "Brand name must be at least two charactersd";
        
 
-        //------------COLOR MESSAGES-------------\\
+        //COLOR MESSAGES\\
         public static string AddedColor= "Added the Color";
         public static string UpdatedColor = "Updated the Color";
         public static string DeletedColor = "Deleted the Color";
         public static string ColorNameInValid = "Color name must be at least two characters";
 
-        //------------RENTAL MESSAGES-------------\\
+        //RENTAL MESSAGES\\
         public static string CarNotReturn = "İstediğiniz araç henüz teslim edilmemiş";
 
-        //------------CARİMAGES MESSAG  ES-------------\\
+        //CARİMAGES MESSAGES\\
         public static string CarImagesAdded = "Added the Car Images";
         public static string CarImagesUpdated = "Updated the  Car Images";
         public static string CarImagesDeleted = "Deleted the  Car Images";
@@ -48,4 +53,4 @@ namespace Business.Constants
     }
 
 }
-}
+

@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Concrete.InMemory
 {
-    public class CarDatabaseContext : ICarDal
+    public class InMemoryCarDal 
     {
         List<Car> _cars;
 
-        public CarDatabaseContext()
+        public InMemoryCarDal()
         {
             _cars = new List<Car>
             {
