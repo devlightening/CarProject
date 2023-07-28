@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -13,6 +14,5 @@ namespace Core.DataAccess
         void Add(T entity);
         void Update(T entity);
         void Delete(T entity);
-
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Azure;
+using Core.Entities.Concrete;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +10,8 @@ namespace Business.Abstract
 {
     public interface IUserService
     {
+        List<OperationClaim> GetCalims(User user);
+        void Add(User user);
+        User GetByEmail(string email);
     }
 }

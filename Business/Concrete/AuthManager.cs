@@ -15,7 +15,7 @@ namespace Business.Concrete
     {
         IAuthService _authService;
         IUserService _userService;
-        IToken
+        //IToken
 
         public AuthManager(IAuthService authService)
         {
@@ -24,8 +24,9 @@ namespace Business.Concrete
 
         public IDataResult<User> LogIn(UserForLogInDto userForLogInDto)
         {
-            
-           
+            return IDataResult<User>;
+
+
         }
 
         public IDataResult<User> Register(UserForRegisterDto userRegisterDto, string passaword)

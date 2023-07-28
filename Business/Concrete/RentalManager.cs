@@ -18,7 +18,7 @@ namespace Business.Concrete
         {
             _rentalDal = rentalDal;
         }
-       // [ValidationAspect(typeof(RentalValidator))]
+        //[ValidationAspect(typeof(RentalValidator))]
 
         public IResult Add(Rental rental)
         {
@@ -39,7 +39,7 @@ namespace Business.Concrete
 
         public IDataResult<List<Rental>> GetAll()
         {
-            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(),Messages.Listed)
+            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(), Messages.Listed);
         }
 
         public IDataResult<Rental> GetById(int Id)
