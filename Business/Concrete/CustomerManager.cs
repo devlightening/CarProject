@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -20,32 +23,52 @@ namespace Business.Concrete
             _customerDal = customerDal;
         }
 
-        public IResult Add(Customer costumer)
+        [ValidationAspect(typeof(CustomerValidator))]
+        //[SecuredOperation("admin,moderator")]
+        public IResult Add(Customer customer)
         {
-            _customerDal.Add(costumer);
-            return new SuccessResult(Messages.Added);
+            var result = BusinessRules.Run(CheckIfCustomerExist(customer.UserId));
+            if (result != null)
+            {
+                return result;
+            }
+            _customerDal.Add(customer);
+            return new SuccessResult(CustomerConstants.CustomerAdded);
         }
 
-        public IResult Delete(Customer costumer)
+        //[SecuredOperation("admin,moderator")]
+        public IResult Delete(Customer customer)
         {
-            _customerDal.Delete(costumer);
-            return new SuccessResult(Messages.Deleted);
+            _customerDal.Delete(customer);
+            return new SuccessResult(CustomerConstants.CustomerDeleted);
         }
-        public IResult Update(Customer costumer)
+
+        [ValidationAspect(typeof(CustomerValidator))]
+        //[SecuredOperation("admin,moderator")]
+        public IResult Update(Customer customer)
         {
-            _customerDal.Update(costumer);
-            return new SuccessResult(Messages.Updated);
+            _customerDal.Update(customer);
+            return new SuccessResult(CustomerConstants.CustomerUpdated);
         }
 
         public IDataResult<List<Customer>> GetAll()
         {
-            return new SuccessDataResult<List<Customer>>(_customerDal.GetAll(),Messages.Listed);
+            return new SuccessDataResult<List<Customer>>(_customerDal.GetAll(),CustomerConstants.AllCustomerGetted);
         }
 
         public IDataResult<Customer> GetById(int Id)
         {
-            return new SuccessDataResult<Customer>(_customerDal.Get(c => c.UserId == Id), Messages.Listed);
-        }    
+            return new SuccessDataResult<Customer>(_customerDal.Get(c => c.UserId == Id), CustomerConstants.CustomerGettedById);
+        } 
+        private IResult CheckIfCustomerExist(int userId)
+        {
+            var result=_customerDal.GetAll(c=>c.UserId==userId).Any();
+            if (result)
+            {
+                return new ErrorResult(CustomerConstants.CustomerAlreadyExist);
+            }
+            return new SuccessResult();
+        }
     }
 }
 

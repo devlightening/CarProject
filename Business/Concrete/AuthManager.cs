@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Core.Entities.Concrete;
 using Core.Utilities.Results;
+using Core.Utilities.Security.JWT;
 using Entities.DTOs;
 using Microsoft.Identity.Client;
 using System;
@@ -13,20 +14,19 @@ namespace Business.Concrete
 {
     public class AuthManager : IAuthService
     {
-        IAuthService _authService;
         IUserService _userService;
+        ITokenHelper _tokenHelper;
         //IToken
 
-        public AuthManager(IAuthService authService)
+        public AuthManager(IUserService userService, ITokenHelper tokenHelper)
         {
-            _authService = authService;
+            IUserService _userService;
+            ITokenHelper _tokenHelper;
         }
 
         public IDataResult<User> LogIn(UserForLogInDto userForLogInDto)
         {
-            return IDataResult<User>;
-
-
+            throw new NotImplementedException();
         }
 
         public IDataResult<User> Register(UserForRegisterDto userRegisterDto, string passaword)

@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -21,69 +22,80 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
+        //[ValidationAspect(typeof(CarValidator))]
+        //[SecuredOperation("admin,moderator")]
+        //[CacheRemoveAspect("ICarService.Get")]
         public IResult Add(Car car)
         {
-           _carDal.Add(car);
-            return new SuccessResult(Messages.AddedCar);
+            var result = BusinessRules.Run(CheckIfCarCountOfBrandCorrect(car.BrandId), CheckIfCarNameExists(car.CarName));
+            if (result!=null)
+            {
+                return result;
+            }
+            _carDal.Add(car);
+            return new SuccessResult(CarConstants.CarAdded);
         }
-
-        public IResult Delete(Car car)
+         //[SecuredOperation("admin,moderator")]
+         //[CacheRemoveAspect("ICarService.Get")]
+         //[SecuredOperation("admin,moderator")]
+         public IResult Delete(Car car)
         {
             _carDal.Delete(car);
-            return new SuccessResult(Messages.DeletedCar);
+            return new SuccessResult(CarConstants.CarDeleted);
         }
+
+        //[SecuredOperation("admin,moderator")]
+        //[CacheRemoveAspect("ICarService.Get")]
+        //[SecuredOperation("admin,moderator")]
         public IResult Update(Car car)
         {
             _carDal.Update(car);
-            return new SuccessResult(Messages.UpdatedCar);
+            return new SuccessResult(CarConstants.CarUpdated);
         }
+        //[CacheAspect]
         public IDataResult<List<Car>> GetAll()
         {
             _carDal.GetAll();
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(),Messages.ListedCar);
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(), CarConstants.AllCarGetted);
         }
 
-        public IDataResult<List<CarDetailDto>> GetCarDetail()
+        public List<Car> GetByBrandId(int brandId)
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(),Messages.Listed);
+            return _carDal.GetAll(c => c.BrandId == brandId);
+        }
+        //[CacheAspect]
+        public IDataResult<Car> GetById(int id)
+        {
+            return new SuccessDataResult<Car>(_carDal.Get(c => c.CarId == id), CarConstants.CarGettedById);
         }
 
-        public IDataResult<List<CarDetailDto>> GetCarDetailsByBrand(int brandId)
+        public IDataResult<CarDetailDto> GetCarDetailsById(int id)
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailsByBrand(brandId), Messages.Listed);
+            return new SuccessDataResult<CarDetailDto>(_carDal.GetCarsDetails(c => c.CarId == id).FirstOrDefault());
         }
 
-        public IDataResult<List<CarDetailDto>> GetCarDetailsByColor(int colorId)
+        public IDataResult<List<CarDetailDto>> GetCarDetials()
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailsByColor(colorId), Messages.Listed);
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarsDetails());
         }
 
-        public IDataResult<List<CarDetailDto>> GetCarDetailsByColorAndBrand(int brandId, int colorId)
+        private IResult CheckIfCarNameExists(string carName)
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails().Where(c => c.BrandId == brandId
-            && c.ColorId == colorId).ToList());
+            if (_carDal.GetAll(c => c.CarName == carName).Any())
+            {
+                return new ErrorResult(CarConstants.CarNameAlreadyExists);
+            }
+            return new SuccessResult();
+        }
+        private IResult CheckIfCarCountOfBrandCorrect(int brandId)
+        {
+         var result =_carDal.GetAll(c => c.BrandId == brandId).Count;
+            if (result >= 15) 
+            {
+                return new ErrorResult(CarConstants.CarCountOfBrandCorrect);
+            }
+            return new SuccessResult();
         }
 
-        public IDataResult<List<Car>> GetCarsByBrandId(int Id)
-        {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == Id), Messages.Listed);
-        }
-
-        public IDataResult<List<Car>> GetCarsByColorId(int Id)
-        {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == Id), Messages.Listed);
-        }
-
-        public IDataResult<List<CarDetailDto>> GetImageDetailsByCar(int carId)
-        {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetImageDetailsByCar(carId), Messages.Listed);
-        }
-
-        public IResult TransactionOperation(Car car)
-        {
-            _carDal.Update(car);
-            _carDal.Add(car);
-            return new SuccessResult(Messages.UpdatedCar);
-        }    
     }
 }

@@ -23,6 +23,10 @@ namespace Business.Concrete
             _userDal.Add(user);
 
         }
+        public void Update(User user)
+        {
+            _userDal.Update(user);
+        }
 
         public User GetByEmail(string email)
         {
@@ -30,10 +34,20 @@ namespace Business.Concrete
 
         }
 
-        public List<OperationClaim> GetCalims(User user)
+        public User GetById(int id)
+        {
+            return _userDal.Get(u=>u.Id==id);
+        }
+
+        public User GetByMail(string email)
+        {
+            return _userDal.Get(u=>u.Email==email);
+        }
+        public List<OperationClaim> GetClaims(User user)
         {
             return _userDal.GetClaims(user);
-
         }
+
+    
     }
 }
