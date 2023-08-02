@@ -61,7 +61,7 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<Branch>>(_branchDal.GetAll(c=>c.CityId==cityId));
         }
-
+        //#region BusinessRules
         public IDataResult<Branch> GetById(int id)
         {
             return new SuccessDataResult<Branch>(_branchDal.Get(b => b.Id == id));
@@ -86,6 +86,6 @@ namespace Business.Concrete
             }
             return new SuccessResult();
         }
-
+        //#endregion
     }
 }

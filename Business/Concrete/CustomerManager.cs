@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
@@ -24,7 +25,7 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(CustomerValidator))]
-        //[SecuredOperation("admin,moderator")]
+        [SecuredOperation("admin,moderator")]
         public IResult Add(Customer customer)
         {
             var result = BusinessRules.Run(CheckIfCustomerExist(customer.UserId));
@@ -36,7 +37,7 @@ namespace Business.Concrete
             return new SuccessResult(CustomerConstants.CustomerAdded);
         }
 
-        //[SecuredOperation("admin,moderator")]
+        [SecuredOperation("admin,moderator")]
         public IResult Delete(Customer customer)
         {
             _customerDal.Delete(customer);
@@ -44,13 +45,13 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(CustomerValidator))]
-        //[SecuredOperation("admin,moderator")]
+        [SecuredOperation("admin,moderator")]
         public IResult Update(Customer customer)
         {
             _customerDal.Update(customer);
             return new SuccessResult(CustomerConstants.CustomerUpdated);
         }
-
+        //#region BusinessRules
         public IDataResult<List<Customer>> GetAll()
         {
             return new SuccessDataResult<List<Customer>>(_customerDal.GetAll(),CustomerConstants.AllCustomerGetted);
@@ -69,6 +70,7 @@ namespace Business.Concrete
             }
             return new SuccessResult();
         }
+        //#endregion
     }
 }
 
