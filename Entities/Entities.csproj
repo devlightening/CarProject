@@ -14,4 +14,10 @@
     <Folder Include="Abstract\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Concrete\Model.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+
 </Project>
